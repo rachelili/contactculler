@@ -1,0 +1,20 @@
+<html>
+<body>
+{{user}}
+Hello {{nickname}}!
+<p>Is administrator: {{is_admin}}</p>
+<h1>Comments</h1>
+{{data}}
+	<br><form action="/sign" method="post">
+		<div>
+			name: <input name = "name" style="width: 464px; "><br>
+			<textarea name="content" rows="3" cols="60"></textarea>
+			<br>
+		</div>
+		<div>
+			<input type="submit" value="Sign Guestbook">
+		</div>
+	</form>
+	<input type = "button" value = "Sign Out" onclick = "window.location='{{signout_url}}'"">
+</body>
+</html>

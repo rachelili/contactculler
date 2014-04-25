@@ -22,3 +22,12 @@ class ContactField(ndb.Model):
     type = ndb.KeyProperty()
     value = ndb.StringProperty()
     
+class Greeting(ndb.Model):
+    owner = ndb.UserProperty()
+    content = ndb.TextProperty()
+    name = ndb.StringProperty()
+    date = ndb.DateTimeProperty(auto_now_add=True)
+    
+    
+    
+

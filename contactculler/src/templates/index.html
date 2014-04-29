@@ -1,4 +1,19 @@
 <html>
+<head>
+	<script type ="text/javascript" >
+		function config_contacttype(contacttype_elt){
+			console.write(contacttype_elt.options[contacttype_elt.selectedIndex]);
+			if (contacttype_elt.options[contacttype_elt.selectedIndex] == "BusinessContact"){
+				document.getElementById("BusinessInputs").style.display = 'table-row-group';
+				document.getElementById("HumanInputs").style.display = 'none';
+			}
+			else {
+				document.getElementById("BusinessInputs").style.display = 'none';
+				document.getElementById("HumanInputs").style.display = 'table-row-group';
+			}
+		}
+	</script>
+</head>
 <body>
 {{user}}
 Hello {{nickname}}!
@@ -6,11 +21,32 @@ Hello {{nickname}}!
 <h1>Comments</h1>
 {{data}}
 	<br><form action="/sign" method="post">
-		<div>
-			name: <input name = "name" style="width: 464px; "><br>
-			<textarea name="content" rows="3" cols="60"></textarea>
-			<br>
-		</div>
+		<div><table>	
+			<tr>
+				<th>Select Type</th>
+				<td>
+					<select name = "ContactType" onchange = "config_contacttype(this)">
+						{{contacttypeoptions}}
+					</select>
+				</td>
+			</tr>
+			<tbody id="BusinessInputs" style = "display:table-row-group">
+				<tr>
+					<th>Name:</th>
+					<td><input name = "name" style="width: 464px; "></td>
+				</tr>
+			</tbody>
+			<tbody id = "HumanInputs" style = "display:table-row-group">
+				<tr>
+					<th>First name:</th> 
+					<td><input name = "firstname" style="width: 464px; "></td>
+				</tr>			
+				<tr>	
+					<th>Last name:</th> 
+					<td><input name = "lastname" style="width: 464px; "></td>
+				</tr>
+			</tbody>
+		</table></div>
 		<div>
 			<input type="submit" value="Sign Guestbook">
 		</div>

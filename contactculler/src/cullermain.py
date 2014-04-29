@@ -55,34 +55,41 @@ class MainPage(webapp2.RequestHandler):
         template = jinja_environment.get_template("index.html")
         
         contacts = ndb.gql('SELECT * ' #pulls from database
-                            'FROM Greeting '
+                            'FROM Contact '
                             'WHERE ANCESTOR IS :1 '
-                            'ORDER BY date DESC LIMIT 10',
+                            'ORDER BY name ASC LIMIT 10',
                             guestbook_key)
         context["data"]=""
+        context["contacttypeoptions"] = '<option value="BusinessContact">Business</option>\n<option value="HumanContact">Person</option>'
         for contact in contacts:
             if contact.owner: #if an owner exists
                 context["data"]+='<b>%s</b> wrote: ' % contact.owner.nickname() #show their nickname
-                context["data"]+= 'name = ' + contact.name #and their company name
+                context["data"]+= '<p> name =' + contact.name + '</p>' #and their company name
             else:
                 context["data"]+='An anonymous person wrote:'
-            context["data"]+='<blockquote>%s</blockquote>' % cgi.escape(contact.content)
+            #context["data"]+='<blockquote>%s</blockquote>' % cgi.escape(contact.content) 
+            #to print < or > or &, use "&(amp, gt, lt);" for which you need cgi.escape
         return self.response.out.write(template.render(context))
+
 
 class Guestbook(webapp2.RequestHandler):
     def post(self):
-        greeting = DataStructures.Greeting(parent=guestbook_key)
-        
         if users.get_current_user(): #if there is a user
-            greeting.owner = users.get_current_user() #the owner is the user
-        greeting.name = self.request.get('name') #display their name
-        greeting.content = self.request.get('content') #display the content they wrote
-        greeting.put() #put it into the template
+            contacttype = self.request.get('ContactType')
+            if contacttype == 'BusinessContact':
+                greeting = DataStructures.BusinessContact(parent=guestbook_key)
+                greeting.name = self.request.get('name') #display single name entry
+            elif contacttype == 'HumanContact':
+                greeting = DataStructures.HumanContact(parent=guestbook_key)
+                greeting.firstname = self.request.get('firstname') #display first name entry
+                greeting.lastname = self.request.get('lastname') #display last name entry    
+            else:
+                logging.error('cullermain.Guestbook.post(): Unknown contact type ='+str(contacttype))
+            greeting.owner = users.get_current_user() #set the owner to the user
+            greeting.put() #put it into the template
         self.redirect('/home') #return to the homepage
     
 class SignIn(webapp2.RequestHandler):
-    
-    
     def get(self):
         context = {}
         template = jinja_environment.get_template("signin.html")

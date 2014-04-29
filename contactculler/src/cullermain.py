@@ -62,8 +62,8 @@ class MainPage(webapp2.RequestHandler):
         context["data"]=""
         for contact in contacts:
             if contact.owner: #if an owner exists
-                context["data"]+='<b>%s</b> wrote: ' % contact.owner.nickname()
-                context["data"]+= 'name = ' + contact.name
+                context["data"]+='<b>%s</b> wrote: ' % contact.owner.nickname() #show their nickname
+                context["data"]+= 'name = ' + contact.name #and their company name
             else:
                 context["data"]+='An anonymous person wrote:'
             context["data"]+='<blockquote>%s</blockquote>' % cgi.escape(contact.content)
@@ -73,12 +73,12 @@ class Guestbook(webapp2.RequestHandler):
     def post(self):
         greeting = DataStructures.Greeting(parent=guestbook_key)
         
-        if users.get_current_user():
-            greeting.owner = users.get_current_user()
-        greeting.name = self.request.get('name')
-        greeting.content = self.request.get('content')
-        greeting.put()
-        self.redirect('/home')
+        if users.get_current_user(): #if there is a user
+            greeting.owner = users.get_current_user() #the owner is the user
+        greeting.name = self.request.get('name') #display their name
+        greeting.content = self.request.get('content') #display the content they wrote
+        greeting.put() #put it into the template
+        self.redirect('/home') #return to the homepage
     
 class SignIn(webapp2.RequestHandler):
     

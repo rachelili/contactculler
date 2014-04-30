@@ -60,7 +60,7 @@ class MainPage(webapp2.RequestHandler):
                             'ORDER BY name ASC LIMIT 10',
                             guestbook_key)
         context["data"]=""
-        context["contacttypeoptions"] = '<option value="BusinessContact">Business</option>\n<option value="HumanContact">Person</option>'
+        context["contacttypeoptions"] = '<option value="HumanContact" selected>Person</option>\n<option value="BusinessContact">Business</option>'
         for contact in contacts:
             if contact.owner: #if an owner exists
                 context["data"]+='<b>%s</b> wrote: ' % contact.owner.nickname() #show their nickname

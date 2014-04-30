@@ -1,9 +1,9 @@
-<html>
+<!DOCTYPE html>
 <head>
 	<script type ="text/javascript" >
 		function config_contacttype(contacttype_elt){
-			console.write(contacttype_elt.options[contacttype_elt.selectedIndex]);
-			if (contacttype_elt.options[contacttype_elt.selectedIndex] == "BusinessContact"){
+			//console.log(contacttype_elt.options[contacttype_elt.selectedIndex].value);
+			if (contacttype_elt.options[contacttype_elt.selectedIndex].value == "BusinessContact"){
 				document.getElementById("BusinessInputs").style.display = 'table-row-group';
 				document.getElementById("HumanInputs").style.display = 'none';
 			}
@@ -14,7 +14,7 @@
 		}
 	</script>
 </head>
-<body>
+<body onload = "config_contacttype(document.getElementById('ContactType_select'))">
 {{user}}
 Hello {{nickname}}!
 <p>Is administrator: {{is_admin}}</p>
@@ -25,7 +25,7 @@ Hello {{nickname}}!
 			<tr>
 				<th>Select Type</th>
 				<td>
-					<select name = "ContactType" onchange = "config_contacttype(this)">
+					<select name = "ContactType" id = "ContactType_select" onchange = "config_contacttype(this)">
 						{{contacttypeoptions}}
 					</select>
 				</td>
@@ -51,6 +51,6 @@ Hello {{nickname}}!
 			<input type="submit" value="Sign Guestbook">
 		</div>
 	</form>
-	<input type = "button" value = "Sign Out" onclick = "window.location='{{signout_url}}'"">
+	<input type = "button" value = "Sign Out" onclick = "window.location='{{signout_url}}'">
 </body>
 </html>

@@ -27,7 +27,7 @@ class ContactField(polymodel.PolyModel): #ContactField, which contains a type (l
     type = ndb.KeyProperty() #the type is a key in the dictionary ContactField??
     value = ndb.StringProperty() #the value - which the user inputs - is in the form of a string
     note = ndb.TextProperty() #for notes about each field
-    date = ndb.DateTimeProperty(auto_now_add = True)
+    date = ndb.DateTimeProperty(auto_now = True)
     
 #class Greeting(ndb.Model):      #goal: turn Greeting into BusinessContact
     #owner = ndb.UserProperty()  #the owner is the user

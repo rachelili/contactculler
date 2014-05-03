@@ -10,35 +10,7 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-- kind: BusinessContact
-  ancestor: yes
-  properties:
-  - name: name
-
-- kind: Contact
-  ancestor: yes
-  properties:
-  - name: class
-  - name: name
-
 - kind: Contact
   ancestor: yes
   properties:
   - name: name
-
-- kind: Greeting
-  ancestor: yes
-  properties:
-  - name: date
-    direction: desc
-
-- kind: Greeting
-  ancestor: yes
-  properties:
-  - name: name
-
-- kind: Greeting
-  ancestor: yes
-  properties:
-  - name: name
-    direction: desc

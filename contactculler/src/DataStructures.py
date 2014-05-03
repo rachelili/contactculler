@@ -21,13 +21,14 @@ class BusinessContact(Contact): #BusinessContact, which is also a Contact
     name = ndb.StringProperty() #the name of the company, which is a string
     
 class ContactFieldType(polymodel.PolyModel): #ContactFieldType, which contains a name for the Field Type
-    name = ndb.StringProperty() #the name is in the form of a string
+    name = ndb.StringProperty() #the name is in the form of a string, the name of form field
+    display = ndb.StringProperty()   # string that is displayed to user 
 
-class ContactField(polymodel.PolyModel): #ContactField, which contains a type (label) and a value (containing an email, number, etc)
-    type = ndb.KeyProperty() #the type is a key in the dictionary ContactField??
+class ContactField(polymodel.PolyModel): #ContactField, which contains a type (label) and a value (containing an email, number, etc). parent = Contact key
+    type = ndb.StringProperty #ndb.KeyProperty() #the type is a key in the dictionary ContactField??
     value = ndb.StringProperty() #the value - which the user inputs - is in the form of a string
     note = ndb.TextProperty() #for notes about each field
-    date = ndb.DateTimeProperty(auto_now_add = True)
+    date = ndb.DateTimeProperty(auto_now = True)
     
 #class Greeting(ndb.Model):      #goal: turn Greeting into BusinessContact
     #owner = ndb.UserProperty()  #the owner is the user

@@ -69,11 +69,20 @@ class MainPage(webapp2.RequestHandler):
                 context["data"]+='An anonymous person wrote:'
             #context["data"]+='<blockquote>%s</blockquote>' % cgi.escape(contact.content) 
             #to print < or > or &, use "&(amp, gt, lt);" for which you need cgi.escape
+            
+            # get all contact fields whose ancestor is contact.key
+            # loop through contact fields and put them into context["data"]
+            
+            
+        context["contactfields_dict"] = {"phone_home": "Phone (home)",
+                                "phone_mobile": "Phone (mobile)",
+                                "address_home": "Address (home)"}
         return self.response.out.write(template.render(context))
 
 
 class Guestbook(webapp2.RequestHandler):
     def post(self):
+        logging.info("cullermain.Guestbook.post(): Got here!")
         if users.get_current_user(): #if there is a user
             contacttype = self.request.get('ContactType')
             if contacttype == 'BusinessContact':
@@ -87,6 +96,21 @@ class Guestbook(webapp2.RequestHandler):
                 logging.error('cullermain.Guestbook.post(): Unknown contact type ='+str(contacttype))
             greeting.owner = users.get_current_user() #set the owner to the user
             greeting.put() #put it into the template
+            greeting_key = greeting.key  # the parent of the contact fields
+            # this should be from DB   "select (star) from ContactFieldTypes" 
+            contactfields_dict = {"phone_home": "Phone (home)",
+                                "phone_mobile": "Phone (mobile)",
+                                "address_home": "Address (home)"}
+            
+            for key in contactfields_dict:
+                if self.request.get_all(key):
+                    logging.info("self.request.get(key) = "+str(self.request.get_all(key)))  
+                    for contactfield_value in self.request.get_all(key):
+                        logging.info( "key = "+str( key)+ " value = " + str(contactfield_value))
+                        # save contact field in DB with parent = greeting_key
+                        # key = contact field type
+                        #value = contractfield_value
+        
         self.redirect('/home') #return to the homepage
     
 class SignIn(webapp2.RequestHandler):

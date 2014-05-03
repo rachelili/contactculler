@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <head>
 	<script type ="text/javascript" >
+	
+		function make_contactfields_select(option_dict) {
+			contactfield_select_elt = document.getElementById("contactfield_select");
+			for (var key in option_dict) {
+				contactfield_select_elt.innerHTML += '<option value="'+key+'">'+option_dict[key]+'</option>';
+			}
+		
+		}
 		function config_contacttype(contacttype_elt){
 			//console.log(contacttype_elt.options[contacttype_elt.selectedIndex].value);
 			if (contacttype_elt.options[contacttype_elt.selectedIndex].value == "BusinessContact"){
@@ -12,6 +20,14 @@
 				document.getElementById("HumanInputs").style.display = 'table-row-group';
 			}
 		}
+		
+		function add_field(select_elt) {
+			selected_val = select_elt.options[select_elt.selectedIndex].value; 
+			selected_txt = select_elt.options[select_elt.selectedIndex].innerText;
+			var tbody = document.getElementById("contactfields");
+			tbody.innerHTML += '<tr><th>'+selected_txt+'</th><td><input name="'+selected_val+'" type="text" size=50/> </td></tr>';
+		}
+		
 	</script>
 </head>
 <body onload = "config_contacttype(document.getElementById('ContactType_select'))">
@@ -46,11 +62,27 @@ Hello {{nickname}}!
 					<td><input name = "lastname" style="width: 464px; "></td>
 				</tr>
 			</tbody>
+
+			<tbody id=contactfields>
+			</tbody>
+
+			<tr>
+				<th>Add Field</th>
+				<td>
+					<select id="contactfield_select" onchange="add_field(this);">
+					</select>
+				</td>
+			</tr>
 		</table></div>
 		<div>
 			<input type="submit" value="Sign Guestbook">
 		</div>
 	</form>
 	<input type = "button" value = "Sign Out" onclick = "window.location='{{signout_url}}'">
+	
+<script type ="text/javascript" >
+	make_contactfields_select({{contactfields_dict}});
+
+</script>
 </body>
 </html>

@@ -25,7 +25,10 @@
 			selected_val = select_elt.options[select_elt.selectedIndex].value; 
 			selected_txt = select_elt.options[select_elt.selectedIndex].innerText;
 			var tbody = document.getElementById("contactfields");
-			tbody.innerHTML += '<tr><th>'+selected_txt+'</th><td><input name="'+selected_val+'" type="text" size=50/> </td></tr>';
+			temp = document.createElement('table');   // make an empty dummy table to hold the new row
+			temp.innerHTML = '<tr><th>'+selected_txt+'</th><td><input name="'+selected_val+'" type="text" size=50/> </td></tr>'; // put a row in the dummy table by using HTML text.
+			elt = temp.rows[0];  // pull the row element out of the dummy table
+			tbody.insertBefore(elt, null);  // append the row element to the real table.
 		}
 		
 	</script>
@@ -69,8 +72,9 @@ Hello {{nickname}}!
 			<tr>
 				<th>Add Field</th>
 				<td>
-					<select id="contactfield_select" onchange="add_field(this);">
+					<select id="contactfield_select" >
 					</select>
+					<input type="button" value="Add" onclick="add_field(document.getElementById('contactfield_select'));"/>
 				</td>
 			</tr>
 		</table></div>
